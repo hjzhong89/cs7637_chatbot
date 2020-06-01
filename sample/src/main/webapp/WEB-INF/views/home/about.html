@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>About CS7637 Chat Bot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
+          th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}"/>
+    <link href="../../../resources/css/chatbot.css" rel="stylesheet" media="screen"
+          th:href="@{/resources/css/chatbot.css}"/>
+</head>
+<body>
+<div th:replace="fragments/layout :: header"></div>
+<div class="container" style="width: 100%" id="wrapper">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">
+                    &nbsp;
+                </a>
+            </li>
+            <li>
+                <a href="#" class="about-nav" data-article="design-goals">Design Goals</a>
+            </li>
+            <li>
+                <a href="#" class="about-nav" data-article="hld">High Level Design</a>
+            </li>
+            <li>
+                <a href="#" class="about-nav" data-article="implementation">Implementation</a>
+            </li>
+            <li>
+                <a href="#" class="about-nav" data-article="project-reflection">Project Reflection</a>
+            </li>
+            <li>
+                <a href="#" class="about-nav" data-article="bibliography">Bibliography</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="article-container" id="page-content-wrapper">
+        <p class="lead text-center">
+            About CS7637 Chat Bot
+        </p>
+
+        <article id="design-goals">
+            <!-- **********   DESIGN GOALS    **************** -->
+            <h2 id="design-goals-header">Design Goals</h2>
+            <p>
+                The purpose of the web application is to demonstrate a conversational AI agent that can mimic natural
+                sounding discussion about Georgia Tech's <a
+                    href="https://www.omscs.gatech.edu/cs-7637-knowledge-based-artificial-intelligence-cognitive-systems">CS7637:
+                Knowledge-Based AI</a> course. The agent should be able to answer questions about class topics and
+                assignments, as well as engage in common aspects of conversation &mdash; greetings, thanks, goodbye,
+                etc. Specific design goals include:
+            <ol>
+                <li>
+                    <strong>Semantic Understanding</strong> &mdash; Knowing the meaning of a statement through natural
+                    language processing and cognitive techniques, rather than relying on pre-defined sets of statements.
+                </li>
+                <li>
+                    <strong>Robust Response Engine</strong> &mdash; An extensible engine that can construct responses in
+                    various ways (scripts, templates, data driven, etc) depending on the input.
+                </li>
+                <li>
+                    <strong>Flexible Knowledge Base</strong> &mdash; A knowledge base that can be easily expanded
+                    through forms and configuration.
+                </li>
+            </ol>
+            </p>
+
+        </article>
+
+        <article id="hld">
+            <!-- ************** HIGH LEVEL DESIGN ******************* -->
+            <h2 id="hld-header">High Level Design</h2>
+
+
+            <h4 id="hld-intentStatuses">Intents & Entities</h4>
+            <p>
+                The AI Agent (chat bot) is inspired by IBM's <a
+                    href="http://www.ibm.com/watson/developercloud/conversation.html">Watson Conversation service</a>
+                which defines intentStatuses and entities to extract meaning from dialogue. An intent is the purpose of
+                a statement such as to greet or ask a question. Entities are the subject matter of conversation.
+                Together they form the backbone of the agent's understanding.
+            </p>
+            <p>
+                Entities are at the core of the agent's domain knowledge. They are modeled simply as frames &mdash; a
+                knowledge representation of an object with slots and slot values to hold the properties of the object
+                (Winston 179). The chat bot's main functionality is providing user's with an interface that allows them
+                to query its knowledge base of entities using natural language.
+            </p>
+            <p>
+                Intents are modeled after thematic role frames. Where entity frames are objects with properties,
+                thematic role frames are knowledge representations of actions and the components of those actions
+                (Winston 212). Components may include a performer, a recipient, a direction, or any number of things
+                that are associated with that action. The use of thematic role frames allows the chat bot to identify a
+                user's intent through a bottom-up approach: parse a user's sentence for components and check if all
+                components for an intent are present.
+            </p>
+
+
+            <h4 id="hld-logical-flow">Logical Flow</h4>
+            <p>
+                The agent's dialogue management consists primarily of three phases: parsing a user's input, inferring
+                the meaning, and constructing a response.
+            </p>
+
+            <div id="logical-flow-graph">
+
+            </div>
+            <div class="mxgraph" style="max-width:100%;border:1px solid transparent; margin: 10px auto;"
+                 data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;xml&quot;:&quot;&lt;mxfile userAgent=\&quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36\&quot; version=\&quot;6.0.1.7\&quot; editor=\&quot;www.draw.io\&quot; type=\&quot;device\&quot;&gt;&lt;diagram name=\&quot;Page-1\&quot;&gt;7VlbT9swFP41fUW5p32E0m1om4RWprFHL3FTi8SOHJe2/PrZiXOx3aBQUooQvJAc28cn3/nOxe7EnWe7rxTk658khunEseLdxL2eOI7tuRb/JyT7ShLMgkqQUBTLSa1giZ6gFMp1yQbFsFAmMkJShnJVGBGMYcQUGaCUbNVpK5Kqu+YggYZgGYHUlP5BMVtX0qlvtfJvECXremfbkiP/QPSQULLBcr+J467Kv2o4A7UuOb9Yg5hsOyJ3MXHnlBBWPWW7OUwFtjVs1bovPaON3RRiNmSBUy14BOlGfvoPgJONgMexbgEtIJWGsn0NTvl5UCiwJ+7Vdo0YXOYgEqNbTgcuW7MslcNSP6QM7npttJsv54yCJIOM7vmUekEgwZJkcmqwt61r7BrQddctNQ2BpEPS6G4h4Q8SlcMIuQZCN3gFue2RgGiBE4Th2SFyzwqRZ0D0CxY5wcU7Qsg/K0KBgdB3TLYpjMs4uwKFCRDPDLl4jPYp4kjRN0HJC1WU3OkBlKxToRQaKBmoQBxfivwugElBUaBIxYB/J93f8xfrwq9f/9ZjO8Q6Q/xNjFgNcqU3nsWNm0I2NIKKUxmgCWSdZGGi20HPPwBeLaMwBQw9qkYcAlTucEsQN683T/pTzSeV8XJVtyhoipoyXCvSnVt9sqGIewbsO9NyMaHoN9hzDrOtpUulsSVPg+kgPk1H4JPkjN1lTEute0mghmfV2HF8cj75pCo6wuWz9+7y/tQ71QpU4Bmp9zlnD/dr704v9atRU3VF4/m1ZlDHsb/L3tS6wfmGGU5+g65U/XbbH9hPBCMUStsej+ZqNdRqqGWHGtVnTi24hRRxy0Vn8ooiWsPYzXrOObOep/rV0/01NDhmmh77NDVUa9icMBy1hNrmAfEygaUBbY//5rEXzM4ZfOaJ8OXB12lTQ7VRvbD8vgjrr0zHxZ5nhp591tjT+4RjGw69cTlR/xr6M63++eMGn3mwviMPEKMnfnB2rDu4MwsfE0KFawWjfNGcpETwCBN+GHevVihNNRFIUYIFYTllyuOmCFEUgfRSDmQojsU2B8+hI0S1njIbOryiAxoc1L4B9TXJAMJc1jmqfxywXUsF23UHptBR0DbvQ244DmWwWQALci8wQwzB4iNhrjfedugbmE8PQN744VWYj3y74k+N+5XnatYJL128z5I1uGQF9SXbia5cbPPOpXMXvGQUMJiUYS3j/A5mOXfAxwr0QDtEuL4Z6AeT6xGBzl/bn4sqj7W/ybmL/w==&lt;/diagram&gt;&lt;/mxfile&gt;&quot;,&quot;toolbar&quot;:&quot;pages zoom layers lightbox&quot;,&quot;page&quot;:0}"></div>
+
+            <p>
+                The first phase occurs in the language parser where the agent processes the text into tokens: separating
+                words by their parts of speech, getting their synonyms, and identifying any named entities (proper
+                nouns, dates, numbers, etc.). The agent also constructs a grammatical structure of the each sentence to
+                identify the subject, its modifiers, the action, dependencies and so on.
+            </p>
+            <p>
+                The tokens are then passed to the inference machine where the agent uses the tokens to try and identify
+                intentStatuses by searching for key words in its knowledge base. If any intentStatuses are identified
+                along with all of their components, they are passed to the response engine, along with the tokenized
+                output.
+            </p>
+            <p>
+                Finally, the response engine determines how it should reply to the user given the information at hand.
+                The agent may have multiple Response Strategies &mdash; methods for word selection, ordering, and
+                sentence construction. A Response Strategy is then associated with specific entity and intent
+                combinations to form a Response Strategy Instance. When the agent is able to identify a response
+                strategy instance in its knowledge base, it crafts a reply and sends it to the user.
+            </p>
+        </article>
+
+        <!-- ********************* IMPLEMENTATION ******************** -->
+        <article id="implementation">
+            <h2 id="implementation-header">Implementation</h2>
+            <h4 id="implementation-database">Knowledge Base Architecture</h4>
+            <p>
+                The Entity Relation Diagram illustrates how the chat bot structures entities and intentStatuses in its
+                database. Both may have one or more key words which allow the agent to identify them in sentences. For
+                example, the intent <span class="db-object">GREET</span> may appear in a user's input as "Hello", "Hi",
+                or "Salutations." In any case, the agent needs to recognize that they all have the same meaning in the
+                conversation and should be responded to in the same way.
+            </p>
+            <p>
+                However, it is not enough to identify an intent only by its key words. If a user asked, "When is
+                assignment 3 due?", the intent could be <span class="db-object">ASK_ASSIGNMENT_DUE_DATE</span> and the
+                agent would have "due" as a key word. But what if users also wanted to ask, "Are any assignments due
+                next week?" The agent could create another intent, <span class="db-object">ASK_ASSIGNMENTS_DUE_IN_DATE_RANGE</span>,
+                and it would also be identified by the key word "due." In order to determine the proper response, the
+                agent would need to disambiguate between the two intentStatuses. Intent Components serve this purpose.
+            </p>
+            <p>
+                Clearly, the difference between <span class="db-object">ASK_ASSIGNMENT_DUE_DATE</span> and <span
+                    class="db-object">ASK_ASSIGNMENTS_DUE_IN_DATE_RANGE</span> is the presence of either an assignment
+                name (assignment 3) or a date range (next week). So in addition to finding the key word in a user's
+                input, the agent also needs further context to understand the purpose behind a user's statement. The
+                intent component table contains all other necessary elements for an intent to be complete.
+            </p>
+            <p>
+                The Response Strategy table contains all the agent's known methods of sentence construction. Actual
+                implementation occurs in the agent's dialogue manager. Due to time and resource constraints, the agent
+                currently only knows how to craft responses using templates from the Template Text Table. Creating a
+                data driven response strategy would require compiling large sets of training data in addition to actual
+                implementation.
+            </p>
+            <p>
+                The Response Strategy Instance table marries all the intentStatuses, entities, response strategies, and
+                templates. The response engine queries the Response Strategy Instance table for intent and entity
+                combinations to determine the appropriate response strategy.
+            </p>
+            <div class="mxgraph" style="max-width:100%;border:1px solid transparent;"
+                 data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;xml&quot;:&quot;&lt;mxfile userAgent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36\&quot; version=\&quot;6.0.1.7\&quot; editor=\&quot;www.draw.io\&quot; type=\&quot;device\&quot;&gt;&lt;diagram name=\&quot;Page-1\&quot;&gt;7VpZc6M4EP41fpwpDp+P4yOzqclupcbZmpknlwIKaAcQJeTYzK/fFkgcBjsmxkdVyEMKtbol1N/XLbVwz5z5268Mhe7f1MZez9Dsbc+c9wxjpJvwXwjiVDCY9FOBw4idivRcsCR/sBRqUromNo5KipxSj5OwLLRoEGCLl2SIMbopq71QrzxriBxcESwt5FWlP4jN3VQ6Hmi5/C9MHFfNrGuy5xlZvx1G14Gcr2eYL8lf2u0jNZbUj1xk001BZC565oxRytMnfzvDnnCtcltqd7enN3tvhgN+jIGRGrwiby2Xfh9wYZu+HY+VR6IN8T0UQGvqct8DoQ6Plks8+wHFdC1mizisXrWmLmXkDw04UsrQzbjE2tRKGkthCWIhfSGeN6MeZcnEpqaNLXAfyEGzIL9L/kCeeBvbchKhJefQR6otl6ElL8Ho7wxUQ9jjCPQflcu0TPSAIq5eXcEkem0Uucl8ooE84gTwbIE1hlebSodixvF2Lyh6BjVEEKY+5iwGFWUgyRGXm5ucifpQytwiCxWpkGS/k42cMwAeJAnqCWFWCNEzpvd2zxh6AlSbvMKjw5OFTv9BPlY9MHCpc4c/G5dwvAyRJdobSBplIik3eviFZygptAOa8K5IDCmKYEASOA+J1bxfg78AgkBgf5ETcBoqgNFzxgpGOeKFNmCloD8KT6MeTwmgeSSAkxbw6+8J6NU3HK9+UGZ3kX1DkT25ZGgPmoS2ZE3evRvfdUY5x7qckEbiTeSE4b6cMKN+CE7rtvurJoWMC033e7MFbozOnhQykq2e4nDvceGgZZdPVBSfnE+ySuUU0kwqrsc21E+ySRl3qUMD5C1yaSFutTIseEv4z8LzL6HyeSBaAbzXT2mRNPK+/zDnsQQBrTkFUT7vAxUIpCMG9hdREEJz8d1HQZzK7ohYXDJwuhaxgMPxC+ula2bh0jkZcpyDeSGUqgAx7CFOXsujn+J9lR/adb90uQRAL7k/R+NXhsZbbj0WoNbcv2e/bd/9eiVlLgJOeNxtolfcRPvqeHtgE+0PavLhqIV8qFevUd5ZNdfpz3FkMRJyQoMmZk132/kar+aIN7L5l3nd3pzlhEabcy0Z+22QsXoFkOan7grgFhLVsH/F2z290R2ApE13B/D+vHA7lwD68PyHduPQqV12XvfcqHbq4sExDYpLnByrxfZ3HEGJG+HVkjPYe53uEHlD17PmqCY+R2fLzeO2DpEfK8XuKbsPpNg6CNtIsUa1MnzCfghZBK+e8La7Zb2h2B5c9NxlNCoQU650sb0X0iscn2o+jFf27tV9AOEYABZdoF8v0E2tHOl1NDHGdZE+boMn1eq77Q8q0ghQ5+uoiWGlnntmhw1qGN7oTUu735u2HzvVmU1TXT2HB21weFxx/plLxU/aZ00blevFYV+1HzEjsAiRIG7i44M6qReLyIt9frjEx7eDdfzoFup4daC6CgQqGD/2VUrNJ7iTEUhMYVUoLiiElAQ8Koz8KAT5hr97tB+aRTDfVDcm4x3w0xfIqZCt5Dh26Odgh3Y8O26BHHX3bNdhR38H7pF2kB276vob+tku/E590xycwj5o5j8WT9XzH+Sbi/8B&lt;/diagram&gt;&lt;/mxfile&gt;&quot;,&quot;toolbar&quot;:&quot;pages zoom layers lightbox&quot;,&quot;page&quot;:0}"></div>
+
+            <h4 id="implementation-dm">Dialogue Manager</h4>
+            <p>
+                The language processor, inference machine, and response engine are collectively known as the agent's
+                dialogue manager. Additionally, the Dialogue Manager also keeps a history of the user's past utterances,
+                intentStatuses, and agent responses. Ultimately, the dialogue manager's duty is to control the flow of
+                the conversation for the agent.
+            </p>
+            <h4 id="implementation-nlp">Natural Language Processor</h4>
+            <p>
+                The agent utilizes the <a href="http://stanfordnlp.github.io/CoreNLP/">Stanford CoreNLP</a> library for
+                tokenization, named entity recognition, parts of speech recognition, and dependency parsing. Once the
+                input has been tokenized, the agent searches for each token's lemma and synset on <a
+                    href="https://wordnet.princeton.edu/">WordNet</a> using the <a
+                    href="http://extjwnl.sourceforge.net/">extJWNL library</a>. A synset on WordNet can be thought of as
+                a synonym. By reducing each token to its lemma &mdash; or root form &mdash; and retreiving all synonyms,
+                the agent's own knowledge base only needs to store a single form of a single lemma for key words.
+                Additionally, the application expands on CoreNLP's built in named entities by recognizing assignments as
+                named entities.
+            </p>
+
+            <h4 id="implementation-im">Inference Machine</h4>
+            <p>
+                The inference machine searches for intentStatuses by their key words using the tokenized lemmas and
+                their synonyms. From there, it performs a bottom-up check for each intent's components. To illustrate
+                the different types of components that may exist, consider the following example.
+            </p>
+            <p>
+                For the <span class="db-object">ASK_ENTITY_DESCRIPTION</span> intent, the agent provides an entity's
+                description when a user begins a question with "What is . . . " followed by an entity name. Thus, in
+                order to provide a description, the intent should include a known entity as a component. But what if a
+                user asks, "What is assignment 3's due date?" The user's question begins with "What is" and contains the
+                name of a known entity. However, providing the user with the description would be incorrect. The intent
+                must also contain another type of component that is dependent on the sentence's grammatical structure.
+                It is not enough to name an entity in the query, but the entity must also be the subject of the sentence
+                as well.
+            </p>
+            <p>
+                The inference machine manages all the intentStatuses retrieved from the knowledge base and validates
+                each component individually. The difficulty lies in constructing thematic role frames with components
+                that are specific enough to not yield false positives, but are not so specific that the agent's
+                understanding is too narrow.
+            </p>
+
+            <h4 id="implementation-re">Response Engine</h4>
+            <p>
+                Response Strategies are represented as interfaces in the agent's software architecture. Each response
+                strategy should be able to take the output of the inference machine and output meaningful, logical text
+                for the user. As stated before, the agent is currently only capable of producing responses from
+                templates. The response engine takes each template and fills in data from the entities where needed.
+            </p>
+        </article>
+
+        <article id="project-reflection">
+            <h2 id="project-reflection-header">Project Reflection</h2>
+            <h4 id="pr-metrics">Performance and Metrics</h4>
+            <p>
+                Because the Stanford CoreNLP library loads the test data and trains the agent for each instance of the
+                chat bot, the agent has a large memory foot print of approximately 500 MB. Using a small Linux server
+                hosted by Digital Ocean with 4 GB of memory, this allows the chat bot to respond to user input within
+                seconds.
+            </p>
+            <p>
+                In its current alpha state, the chat bot only knows 3 user intentStatuses: greeting, asking for an
+                assignment's due date, and asking for an entity's description. The chat bot responds to greetings with a
+                templated message ("Hello!"). The other two intentStatuses have both an affirmative response, when the
+                information is found, and a negative response when the information is not in the knowledge base.
+                Additionally, a generic answer for when the agent does not have a response brings the total number of
+                response types to 6.
+            </p>
+
+            <h4 id="pr-improvements">Improvements</h4>
+            <p>
+                When conversing with the chat bot, the most telling signs that the user is speaking to an AI agent
+                rather than another human are the limited scope of knowledge and the repetition of phrases. The most
+                significant improvements with the current architecture would address these two points:
+            <ol>
+                <li>
+                    Inserting more entities and constructing more intentStatuses so that the chat bot can have a wider
+                    variety of topics to speak about.
+                </li>
+                <li>
+                    Creating a data driven response strategy that allows the chat bot to construct unique responses.
+                </li>
+            </ol>
+            </p>
+
+            <h4 id="pr-connection">Cognitive Connection</h4>
+            <p>
+                The agent's understanding of semantics is reminiscent of my two year old nephew's grasp of language. He
+                has a narrow domain of knowledge (colors, numbers, and types of cars) and you must use specific sentence
+                structures and words to test his knowledge. If you show him a red car and ask him, "What color is this?"
+                he'll happily respond red. Yet, if you ask him, "Is the car green?" he won't understand that you are
+                asking about the color of the car.
+            </p>
+            <p>
+                Despite the similarities in capability between my nephew and the chat bot, it is hard for me to believe
+                that the agent's thought process mirrors that of even a two year old's. The agent uses a deductive
+                approach for what appears to be a non-deductive problem. It relies on complex rules to formulate
+                understanding and responses. Yet, my nephew couldn't point out a noun in a sentence, let alone construct
+                a tree diagram of grammatical structures. What goes on in his subconscious that allows him to arrive at
+                the same conclusions? The answer is currently beyond my reach, but I believe it is the key to creating a
+                more advanced AI.
+            </p>
+        </article>
+
+        <article id="bibliography">
+            <h2 id="bibliography-header">Bibliography</h2>
+            <ol>
+                <li class="hanging-indent">
+                    Autayeu, Aliaksandr. 2016. <em>extJWNL</em>. http://extjwnl.sourceforge.net/
+                </li>
+                <li class="hanging-indent">
+                    IBM. 2016. <em>Conversation</em>. https://www.ibm.com/watson/developercloud/conversation.html
+                </li>
+                <li class="hanging-indent">
+                    Manning, Christopher D., Mihai Surdeanu, John Bauer, Jenny Finkel, Steven J. Bethard, and David
+                    McClosky. 2014. <em>The Stanford CoreNLP Natural Language Processing Toolkit In Proceedings of the
+                    52nd Annual Meeting of the Association for Computational Linguistics: System Demonstrations</em>,
+                    pp. 55-60.
+                </li>
+                <li class="hanging-indent">
+                    Winston, Patrick H. 1992. <em>Artificial Intelligence</em> Reading, Massachusetts: Addison-Wesley
+                    Publishing Company.
+                </li>
+            </ol>
+        </article>
+    </div>
+
+</div>
+<div th:replace="fragments/layout :: footer"></div>
+<script src="../../../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
+<script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script src="../../../resources/js/about.js" th:src="@{/resources/js/about.js}"></script>
+<script type="text/javascript" src="https://www.draw.io/js/viewer.min.js"></script>
+</body>
+</html>

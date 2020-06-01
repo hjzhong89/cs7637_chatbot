@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chat</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
+          th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}"/>
+    <link href="../../../resources/css/chatbot.css" rel="stylesheet" media="screen"
+          th:href="@{/resources/css/chatbot.css}"/>
+    <script src="../../../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/chatbot.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/layout :: header"></div>
+<!-- /* Handle the flash message */-->
+<th:block th:if="${message != null}">
+    <!-- /* The message code is returned from the @Controller */ -->
+    <div th:replace="fragments/components :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">
+        &nbsp;</div>
+</th:block>
+
+<div id="chat-title"><h1>CS7637 Chat Bot</h1></div>
+<div id="chat-window" class="chat-window">
+    <span class="chat-window-message"><em>Say hello to start a conversation</em></span>
+    <div id="conversation"></div>
+
+    <p id="typing" class="chat-message" hidden>
+        <span class="chat-message-ai">Agent: </span>
+        <img src="http://kirszenberg.com/assets/facebook-sixth-sense/typing-indicator.gif" style="height: 22px" >
+    </p>
+</div>
+
+<div id="chat-form-container">
+    <form class="" method="post" id="chat-form" th:action="@{/api/chat}" th:object="${chatInput}"
+          th:fragment="chatInput">
+        <input type="text" id="text" th:field="*{text}" class="form-control" autocomplete="off">
+        <input type="hidden" id="user" name="user" value="user" th:field="*{user}">
+    </form>
+</div>
+<div th:replace="fragments/layout :: footer"></div>
+</body>
+</html>

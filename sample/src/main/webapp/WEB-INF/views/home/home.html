@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{view.index.title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
+          th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}"/>
+    <script src="../../../resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/layout :: header"></div>
+<div class="container">
+    <div class="text-center">
+        <h1>CS7637 Chat Bot</h1>
+        <p class="lead">
+            Welcome to the Chat Bot application! Click 'Chat' to begin a conversation.
+        </p>
+        <p>
+            <a class="btn btn-success btn-lg" id="chat" th:href="@{/chat}">Chat</a>
+        </p>
+    </div>
+    <div th:replace="fragments/layout :: footer">&copy; 2016 The Static Templates</div>
+</div>
+</body>
+</html>

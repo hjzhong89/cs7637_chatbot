@@ -1,0 +1,12 @@
+( /Assignment/ [ {ner:NUMBER}] )	ASSIGNMENT
+( /assignment/ [ {ner:NUMBER}] )	ASSIGNMENT
+( /Project/ [ {ner:NUMBER}] )	ASSIGNMENT
+( /project/ [ {ner:NUMBER}] )	ASSIGNMENT
+( /CS/[{ner: NUMBER}] )	COURSE
+( /CS/ [{ner: NUMBER}] )	COURSE
+( /cs/[{ner: NUMBER}] )	COURSE
+( /cs/ [{ner: NUMBER}] )	COURSE
+( /CSE/[{ner: NUMBER}] )	COURSE
+( /CSE/ [{ner: NUMBER}] )	COURSE
+( /cse/[{ner: NUMBER}] )	COURSE
+( /cse/ [{ner: NUMBER}] )	COURSE
